@@ -22,11 +22,34 @@ message PayloadWithSingleOrder {
 	Order order = 1;
 }
 
+message PayloadWithOrderId {
+	uint64 order_id = 1;
+}
+
 service Orders {
 	rpc AddOrder(PayloadWithSingleOrder) returns (Empty) {
 		option(google.api.http) = {
 			post: "/v0/orders",
 			body: "*"
+		};
+	}
+
+	rpc GetOrder(PayloadWithOrderId) returns (PayloadWithSingleOrder) {
+		option(google.api.http) = {
+			get: "/v0/orders/{order_id}"
+		};
+	}
+
+	rpc UpdateOrder(PayloadWithSingleOrder) returns (Empty) {
+		option(google.api.http) = {
+			put: "/v0/orders",
+			body: "*"
+		};
+	}
+
+	rpc RemoveOrder(PayloadWithOrderId) returns (Empty) {
+		option(google.api.http) = {
+			delete: "/v0/orders/{order_id}"
 		};
 	}
 }
